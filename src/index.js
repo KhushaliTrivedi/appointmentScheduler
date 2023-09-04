@@ -90,7 +90,7 @@ const convertTime24to12 = (time24) => {
     if (+tmpArr[0] == 12) {
         time12 = tmpArr[0] + ':' + tmpArr[1] + ' PM';
     } else {
-        if (+tmpArr[0] == 00) {
+        if (+tmpArr[0] == '00') {
             time12 = '12:' + tmpArr[1] + ' AM';
         } else {
             if (+tmpArr[0] > 12) {

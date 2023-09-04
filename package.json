@@ -1,7 +1,7 @@
 {
-  "name": "manneh",
+  "name": "chatbot",
   "version": "1.0.0",
-  "description": "Appointment Scheduler bot for fiverr client.",
+  "description": "Appointment Scheduler bot.",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js"
@@ -10,7 +10,7 @@
     "Dialogflow",
     "Calender"
   ],
-  "author": "Raj Kapadia",
+  "author": "Khushali Trivedi",
   "license": "ISC",
   "dependencies": {
     "@google-cloud/storage": "^3.2.1",
