@@ -8,7 +8,7 @@ webApp.use(bodyParser.urlencoded({
     extended: true
 }))
 
-webApp.use(bodyParser.json()); 
+webApp.use(bodyParser.json());
 
 const PORT = 8000;
 
@@ -75,7 +75,7 @@ const dateTimeForCalander = (date, time) => {
     let event = new Date(Date.parse(newDateTime));
 
     let startDate = event;
-    let endDate = new Date(new Date(startDate).setHours(startDate.getHours()+1));
+    let endDate = new Date(new Date(startDate).setHours(startDate.getHours() + 1));
 
     return {
         'start': startDate,
@@ -117,19 +117,19 @@ const convertTime12To24 = timeStr => {
         console.log(`hours2:${hours}`);
     }
     return `${hours}:${minutes}`;
- };
+};
 
 let slots = [];
 const getFilledTimeSlots = data => {
     let dateTimeX = data.start.dateTime;
     let newTime = new Date(dateTimeX).toLocaleString('en-US', {
-        timeZone : 'GMT',
+        timeZone: 'GMT',
     });
     let timeX = newTime.split(', ')[1]
-        var a = timeX;
-        var b = " ";
-        var position = 7;
-        var output = [a.slice(0, position), b, a.slice(position)].join('');
+    var a = timeX;
+    var b = " ";
+    var position = 7;
+    var output = [a.slice(0, position), b, a.slice(position)].join('');
     const newTimeX = convertTime12To24(output);
     console.log(`getslots${newTimeX}`);
     slots.push(newTimeX);
@@ -161,24 +161,14 @@ const ScheduleAppointment = async (req) => {
     // If time is out of range for opening and closing hours
     if (dateTimeHour['hour'] < OPENTIME || dateTimeHour['hour'] > CLOSETIME) {
         outString = 'We are open from 10 AM to 8 PM, please choose a time in between.';
-        responseText = {'fulfillmentText': outString};
-    // If time is exactly same as opening and closing hours
+        responseText = { 'fulfillmentText': outString };
+        // If time is exactly same as opening and closing hours
     } else if (dateTimeHour['hour'] == OPENTIME || dateTimeHour['hour'] == CLOSETIME) {
         outString = 'Please choose a time after 10 AM and before 8 PM.';
-        responseText = {'fulfillmentText': outString};
-    // If time is good then check for the existing appointments
+        responseText = { 'fulfillmentText': outString };
+        // If time is good then check for the existing appointments
     } else {
         // Check here with the airtable data
-        // let len = await ad.checkAppointmentExist(dateTimeHour['date'], dateTimeHour['time']);
-
-        //
-
-        //    your code should be here and it should return the numbers of appointment at the
-        //    perticular time  
-
-        //
-
-        console.log('here in else');
         let len = await gc.getEvents(dateTimeCalander['start'], dateTimeCalander['end'], TIMEZONE);
 
         if (len.count != 3 || len.count < 3) {
@@ -341,7 +331,7 @@ const rescheduleAppointment = async (req) => {
     let timeString = req['body']['queryResult']['parameters']['reTime'];
 
     outString = `What first name I use to book the appointment?`;
-    
+
     let session = req['body']['session'];
     let sessionVars = `${session}/contexts/sessionvars`;
 
@@ -366,15 +356,12 @@ webApp.post('/webhook', async (req, res) => {
 
     let action = req['body']['queryResult']['action'];
     let responseText = {};
-    
+
     if (action === 'schedule-appointment') {
-        console.log('here in schedule appointment')
         responseText = await ScheduleAppointment(req);
     } else if (action === 'user-number-entered') {
-        console.log('here in Add event')
         responseText = await addEventInCalender(req);
     } else if (action === 'reschedule-appointment') {
-        console.log('here in Reschedule')
         responseText = await rescheduleAppointment(req);
     }
 
